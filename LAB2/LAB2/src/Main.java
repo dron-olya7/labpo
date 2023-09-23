@@ -19,6 +19,9 @@ class Main
         double r;                   //переменные результата разности: r (result)
         double d = data.size();     //в качестве начального значени В берем размер массива
 
+        Sum = 0;    //обнуляем данные для подсчета новой суммы
+        SumI = 0;   //обнуляем данные для подсчета новой суммы
+
         //Подсчет сумма интервалов между ошибками
         for (Integer x : data) {
             Sum += x;
@@ -67,7 +70,7 @@ class Main
         double resultK = 0;
         double B = CalcB(data);
 
-        resultK = Math.abs(data.size() / ((B + 1) * Sum - SumI));
+        resultK = Math.abs(data.size() / (((B + 1) * Sum) - SumI));
 
         return resultK;
     }
@@ -104,10 +107,26 @@ class Main
 
     public static void main(String[] args)
     {
+        //массив входных данных
+        ArrayList<Integer> data = new ArrayList<Integer>();
 
-        ReadFile inputData = new ReadFile("data.txt");
+        //чтение данных из файла
+        try
+        {
+            Scanner scanner = new Scanner(new FileReader("data.txt"));
 
-        ArrayList<Integer> data = inputData.listData;
+            while (scanner.hasNextBigInteger())
+            {
+                data.add(scanner.nextInt());
+            }
+
+            scanner.close();
+        }
+        catch (FileNotFoundException e)
+        {
+            throw new RuntimeException(e);
+        }
+
 
         System.out.println("Общее число ошибок в программе (B): " + CalcB(data));
         System.out.println("Коэффициент пропорциональности (K): " + CalcK(data));
